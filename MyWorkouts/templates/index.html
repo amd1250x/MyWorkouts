@@ -1,0 +1,228 @@
+{% load rest_framework %}
+<html lang="en">
+<head>
+    {% load static %}
+    {% include 'header.html' %}
+</head>
+
+
+<body>
+{{ error }}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">MyWorkouts</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="">Home <span class="sr-only">(current)</span></a>
+          </li>
+{% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="logout">Logout</a>
+          </li>
+          <li class="nav-item mr-auto">
+            <a class="nav-link" href="#">{{ request.user.username }} </a>
+          </li>
+          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Workouts
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="workouts-menu">
+                  <p>No workouts? Add some!</p>
+              </div>
+          </li>
+{% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="login">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="new_user">Create Account</a>
+          </li>
+{% endif %}
+        </ul>
+      </div>
+    </nav>
+{% if request.user.is_authenticated %}
+    <div class="container">
+        <div class="row mt-4">
+            <div class="col">
+                <form id="workout_form" onSubmit="return false;">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ form.name }}
+                    </div>
+                    <button id="submit" class="btn btn-primary" type="button">Add Workout</button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col invisible" id="exercise-sec">
+                <div class="row">
+                    <h1 class="col-8">My Exercises</h1>
+                    <div class="col-4" id="workout_name"></div>
+                </div>
+                <div id="exercises"></div>
+                <br>
+                <form id="exercise_form" onSubmit="return false;">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ form2.name }}
+                    </div>
+                    <div class="form-group">
+                        {{ form2.order }}
+                    </div>
+                    {{ form2.workout_id }}
+                    <button id="submit2" class="btn btn-primary" type="button">Add Exercise</button>
+                </form>
+            </div>
+        </div>
+        <div class="row invisible" id="log-sec">
+            <div class="col-md">
+                <div>
+                    <h1>My Logs</h1>
+                    <h3 id="log_name"></h3>
+                    <div id="log_most_recent"></div>
+                    <form id="log_form" onSubmit="return false;">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{ form3.date }}
+                        </div>
+                        <div class="form-group">
+                            <a href="#log_form" class="btn btn-primary btn-sm col" onclick="insertToday()">Today</a>
+                        </div>
+                        <div class="form-group">
+                            {{ form3.weight }}
+                        </div>
+                        <div class="form-group">
+                            {{ form3.reps }}
+                        </div>
+                        {{ form3.exercise_id }}
+                        <button id="submit3" class="btn btn-primary" type="button">Add Log</button>
+
+                    </form>
+                    <div id="logs"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% else %}
+    {% include "info_body.html" %}
+{% endif %}
+
+    {% if request.user.is_authenticated %}
+    <script>
+        $(document).ready(function() {
+            updateWorkouts();
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                 autoclose: true,
+                todayHighlight: true
+            });
+            $(".alert").alert();
+        });
+
+        function deleteWorkout(w_id) {
+            $.ajax({
+                url: '/workouts/workouts/' + w_id + '/',
+                type: 'DELETE',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}')
+                },
+                success: function(result) {
+                    console.log('Deleted workout ' + w_id);
+                    updateWorkouts();
+                    deleteZombieExercises(w_id);
+                    // When deleting the workouts, the list isn't persistent
+                    // on page, so we can update the Workout dropdown list
+                    // in updateWorkouts()
+                    //
+                    // Since we delete a workout, we want to clear out
+                    // the exercise and log sections
+                    $("#exercise-sec").attr({'class': 'col invisible'});
+                    $("#log-sec").attr({'class': 'row invisible'});
+                }
+            });
+        }
+
+        function deleteExercise(e_id, w_id) {
+            $.ajax({
+                url: '/workouts/exercises/' + e_id + '/',
+                type: 'DELETE',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token|safe }}')
+                },
+                success: function(result) {
+                    console.log('Deleted exercise ' + e_id + ' from workout ' + w_id);
+                    deleteZombieLogs(e_id);
+                    // Since the exercise list is persistent, we want to
+                    // Update it via the button click for 'Delete'
+                }
+            });
+        }
+
+        function deleteLog(l_id, e_id) {
+            $.ajax({
+                url: '/workouts/logs/' + l_id + '/',
+                type: 'DELETE',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token|safe }}')
+                },
+                success: function(result) {
+                    console.log('Deleted log ' + l_id + ' from exercise ' + e_id);
+                    updateLogs(e_id);
+                    // When deleting a log, we want to clear the log card and table
+                    $("#log-sec").attr({'class': 'row invisible'});
+                }
+            });
+        }
+
+        function addSet(l_id, e_id) {
+            var x = $("#set_num" + l_id).val();
+            if (x == "") {
+                return false;
+            }
+            $.get("/workouts/logs/" + l_id + "/").done(function(data){
+                $.ajax({
+                   url: '/workouts/logs/' + l_id + '/',
+                   type: 'PUT',
+                   beforeSend: function(xhr) {
+                        xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token|safe }}')
+                   },
+                   data: "date="+data['date']+"&exercise_id="+data['exercise_id']+"&reps="+data['reps']+"-"+x+"&weight="+data['weight'],
+                   success: function(response) {
+                        console.log("updated log " + l_id + " with value " + x);
+                        updateLogs(e_id);
+                   }
+                });
+            })
+        }
+
+        function deleteLastSet(l_id, e_id) {
+            $.get("/workouts/logs/" + l_id + "/").done(function(data){
+                if (data['reps'].split("-") == data['reps']) {
+                    console.log("yeah");
+                    return false;
+                }
+                var x = rmLast(data['reps']);
+                $.ajax({
+                   url: '/workouts/logs/' + l_id + '/',
+                   type: 'PUT',
+                   beforeSend: function(xhr) {
+                        xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token|safe }}')
+                   },
+                   data: "date="+data['date']+"&exercise_id="+data['exercise_id']+"&reps="+x+"&weight="+data['weight'],
+                   success: function(response) {
+                        console.log("updated log " + l_id + " with value " + x);
+                        updateLogs(e_id);
+                   }
+                });
+            })
+        }
+    </script>
+    <script src="{% static 'index_forms.js' %}"></script>
+    {% endif %}
+</body>
+</html>

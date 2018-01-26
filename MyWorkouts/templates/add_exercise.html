@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Exercise</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <p>
+            <label>Name</label>
+            {{ form.name }}
+        </p>
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

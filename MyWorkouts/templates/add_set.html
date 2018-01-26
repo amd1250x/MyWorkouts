@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Log</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <p>
+            <label>Reps</label>
+            {{ form.reps }}
+        </p>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

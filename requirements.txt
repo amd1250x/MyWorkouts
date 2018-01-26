@@ -1,0 +1,9 @@
+dj-database-url==0.4.2
+Django==1.11
+django-filter==1.1.0
+djangorestframework==3.7.7
+gunicorn==19.4.5
+Markdown==2.6.10
+psycopg2==2.7.3.2
+pytz==2017.3
+whitenoise==3.3.1
