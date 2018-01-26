@@ -67,7 +67,7 @@ function updateExercises(w_id) {
         $("#exercise-sec").attr({'class': 'col visible'});
         $("#log-sec").attr({'class': 'row invisible'});
         console.log("Got Exercises for Workout " + w_id);
-        if (exer_str == "<ul class='list-group'></ul>") {
+        if (exer_str == "<ul class='list-group btn-group-toggle'></ul>") {
             $("#exercises").html("<p>No exercises, add some!</p>");
         } else {
             $("#exercises").html(exer_str);
