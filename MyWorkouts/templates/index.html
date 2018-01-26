@@ -62,78 +62,108 @@
         <div class="row">
             <div class="col invisible" id="exercise-sec">
                 <div class="row">
-                    <h1 class="col-8">My Exercises</h1>
+                    <h2 id='workout_head' class="col-8"></h2>
                     <div class="col-4" id="workout_name"></div>
                 </div>
+
                 <div id="exercises"></div>
-                <br>
-                <form id="exercise_form" onSubmit="return false;">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        {{ form2.name }}
-                    </div>
-                    <div class="row">
-                        <div class="col form-group">
-                            {{ form2.repsStart }}
+
+                <div id="accordion">
+                    <div class="card mt-2">
+                        <div class="card-header" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                              New Exercise
                         </div>
-                        <span class="mt-1"> ➜ </span>
-                        <div class="col form-group">
-                            {{ form2.repsEnd }}
+                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                          <div class="card-body">
+                              <form id="exercise_form" onSubmit="return false;">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    {{ form2.name }}
+                                </div>
+                                <div class="row">
+                                    <div class="col form-group">
+                                        {{ form2.repsStart }}
+                                    </div>
+                                    <span class="mt-1"> ➜ </span>
+                                    <div class="col form-group">
+                                        {{ form2.repsEnd }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col form-group">
+                                        {{ form2.setsStart }}
+                                    </div>
+                                    <span class="mt-1"> ➜ </span>
+                                    <div class="col form-group">
+                                        {{ form2.setsEnd }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    {{ form2.order }}
+                                </div>
+                                {{ form2.workout_id }}
+                                <button id="submit2" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseOne">Add Exercise</button>
+                            </form>
+                          </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col form-group">
-                            {{ form2.setsStart }}
+                      </div>
+                    <div class="card mt-2">
+                        <div class="card-header" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                              Existing Exercise
                         </div>
-                        <span class="mt-1"> ➜ </span>
-                        <div class="col form-group">
-                            {{ form2.setsEnd }}
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                          <div class="card-body">
+                            <form id="existing_exer_form" onSubmit="return false;">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    {{ form_ee.exercise }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_ee.order }}
+                                </div>
+                                {{ form_ee.exist_workout_id }}
+                                <button id="submit_ee" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseTwo">Add Existing Exercise</button>
+                            </form>
+                          </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        {{ form2.order }}
-                    </div>
-                    {{ form2.workout_id }}
-                    <button id="submit2" class="btn btn-primary" type="button">Add Exercise</button>
-                </form>
-                <form id="existing_exer_form" onSubmit="return false;">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        {{ form_ee.exercise }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_ee.order }}
-                    </div>
-                    {{ form_ee.exist_workout_id }}
-                    <button id="submit_ee" class="btn btn-primary" type="button">Add Existing Exercise</button>
-                </form>
+                      </div>
+                </div>
             </div>
         </div>
+        <br>
         <div class="row invisible" id="log-sec">
             <div class="col-md">
                 <div>
-                    <h1>My Logs</h1>
-                    <h3 id="log_name"></h3>
                     <div id="log_most_recent"></div>
-                    <form id="log_form" onSubmit="return false;">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            {{ form3.date }}
+                    <div id="accordion2 mt-2 mb-2">
+                      <div class="card">
+                        <div class="card-header" id="headingThree" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                              New Log
                         </div>
-                        <div class="form-group">
-                            <a href="#log_form" class="btn btn-primary btn-sm col" onclick="insertToday()">Today</a>
+                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion2">
+                          <div class="card-body">
+                            <form id="log_form" onSubmit="return false;">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    {{ form3.date }}
+                                </div>
+                                <div class="form-group">
+                                    <a href="#log_form" class="btn btn-primary btn-sm col" onclick="insertToday()">Today</a>
+                                </div>
+                                <div class="form-group">
+                                    {{ form3.weight }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form3.reps }}
+                                </div>
+                                {{ form3.exercise_id }}
+                                <button id="submit3" class="btn btn-primary" data-toggle="collapse" data-target="#collapseThree" type="button">Add Log</button>
+                            </form>
+                          </div>
                         </div>
-                        <div class="form-group">
-                            {{ form3.weight }}
-                        </div>
-                        <div class="form-group">
-                            {{ form3.reps }}
-                        </div>
-                        {{ form3.exercise_id }}
-                        <button id="submit3" class="btn btn-primary" type="button">Add Log</button>
-
-                    </form>
-                    <div id="logs"></div>
+                      </div>
+                    </div>
+                    <div class="mt-2" id="logs"></div>
                 </div>
             </div>
         </div>

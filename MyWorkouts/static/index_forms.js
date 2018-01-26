@@ -1,5 +1,9 @@
-var curr_workout = [];
-var curr_exercise = [];
+var curr_workout = "";
+var curr_exercise = "";
+
+function setWorkoutName(w) {
+    curr_workout = w;
+}
 
 // Show Workouts in the div
 function updateWorkouts() {
@@ -33,23 +37,20 @@ function updateExercises(w_id) {
     var workout_name = "";
     var exer_str = "";
     $.when(
-        $.get("/workouts/workouts/" + w_id + "/").done(function(data) {
-            curr_workout = data;
-            workout_name = data['name'];
-        }),
         $.get("/workouts/exercises").done(function(data2) {
             data2.sort(function(a, b) {
                 return parseInt(a.order) - parseInt(b.order);
             });
             var repsRange = "";
             var setsRange = "";
-            exer_str = "<ul class='list-group'>";
+            exer_str = "<ul class='list-group btn-group-toggle'>";
             for (exercise in data2) {
                 repsRange = SEtoString(data2[exercise]['repsStart'], data2[exercise]['repsEnd']);
                 setsRange = SEtoString(data2[exercise]['setsStart'], data2[exercise]['setsEnd']);
                 if ((data2[exercise]['workout_id'].split(',')).indexOf(w_id.toString()) > -1) {
                     exer_str += "<li class='list-group-item'>" +
-                                "<a href='#' class='btn btn-sm btn-light' onclick='updateLogs(" + data2[exercise]["id"] + ")'>" +
+                                "<a href='#' class='btn btn-sm btn-light'" +
+                                "onclick='updateLogs(" + data2[exercise]["id"] + ")'>" +
                                 data2[exercise]["name"] +
                                 "  <span class='badge badge-info'>" +
                                 repsRange + "x" + setsRange + "</span>" +
@@ -62,18 +63,17 @@ function updateExercises(w_id) {
             exer_str += "</ul>";
         })
     ).then(function() {
-        $("#work-head").attr({'class': 'invisible'});
+        $("#workout_head").html(curr_workout);
         $("#exercise-sec").attr({'class': 'col visible'});
         $("#log-sec").attr({'class': 'row invisible'});
         console.log("Got Exercises for Workout " + w_id);
-        $("#logs").html("");
         if (exer_str == "<ul class='list-group'></ul>") {
             $("#exercises").html("<p>No exercises, add some!</p>");
         } else {
             $("#exercises").html(exer_str);
         }
-        $("#workout_name").html("<button href='#' class='btn btn-outline-danger float-right mt-2' onclick='deleteWorkout(" +
-                                w_id + ")'>Delete " + workout_name + "</button>")
+        $("#workout_name").html("<button href='#' class='btn btn-outline-danger float-right' onclick='deleteWorkout(" +
+                                w_id + ")'>Delete</button>")
         $("#id_workout_id").val(w_id);
         $("#id_exist_workout_id").val(w_id);
         addListOfExistExer(w_id);
@@ -100,7 +100,7 @@ function updateLogs(e_id) {
             // HTML code for the card/form log
             var log_mr = "";
             if (data3.length == 0) {
-                $("#log_most_recent").html("No logs? add some!");
+                $("#log_most_recent").html("<p>No logs? add some!</p>");
             } else {
             log_mr +=
     "<div class='row mb-2'>" +
