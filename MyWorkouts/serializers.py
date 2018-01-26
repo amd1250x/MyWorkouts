@@ -13,11 +13,15 @@ class ExerciseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Exercise
-        fields = ('id', 'name', 'order', 'workout_id', 'owner')
+        fields = ('id', 'name', 'order', 'repsStart', 'repsEnd', 'setsStart', 'setsEnd', 'workout_id', 'owner')
 
     def create(self, validated_data):
         e = Exercise(name=validated_data['name'],
                      order=validated_data['order'],
+                     repsStart=validated_data['repsStart'],
+                     repsEnd=validated_data['repsEnd'],
+                     setsStart=validated_data['setsStart'],
+                     setsEnd=validated_data['setsEnd'],
                      workout_id=validated_data['workout_id'],
                      owner=validated_data['owner'])
         e.save()

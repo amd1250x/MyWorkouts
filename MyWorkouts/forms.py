@@ -1,4 +1,5 @@
 from django import forms
+from models import Exercise
 import datetime
 
 
@@ -33,10 +34,31 @@ class ExerciseForm(forms.Form):
     name = forms.CharField(max_length=100,
                            widget=forms.TextInput(attrs={'class': 'form-control',
                                                          'placeholder': 'Enter name'}))
+    repsStart = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control',
+                                                               'placeholder': 'Reps Start',
+                                                               'pattern': "\d*"}))
+    repsEnd = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control',
+                                                               'placeholder': 'Reps End',
+                                                               'pattern': "\d*"}))
+    setsStart = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control',
+                                                               'placeholder': 'Sets Start',
+                                                               'pattern': "\d*"}))
+    setsEnd = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control',
+                                                               'placeholder': 'Sets End',
+                                                               'pattern': "\d*"}))
     order = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control',
                                                                'placeholder': 'Lift number',
                                                                'pattern': "\d*"}))
     workout_id = forms.IntegerField(widget=forms.TextInput(attrs={'type': 'hidden'}))
+
+
+class ExistingExerForm(forms.Form):
+    exercise = forms.ModelChoiceField(queryset=Exercise.objects.all())
+
+    order = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control',
+                                                               'placeholder': 'Lift number',
+                                                               'pattern': "\d*"}))
+    exist_workout_id = forms.IntegerField(widget=forms.TextInput(attrs={'type': 'hidden'}))
 
 
 class LogForm(forms.Form):

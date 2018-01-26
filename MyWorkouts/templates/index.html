@@ -71,11 +71,40 @@
                     <div class="form-group">
                         {{ form2.name }}
                     </div>
+                    <div class="row">
+                        <div class="col form-group">
+                            {{ form2.repsStart }}
+                        </div>
+                        <span class="mt-1"> ➜ </span>
+                        <div class="col form-group">
+                            {{ form2.repsEnd }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col form-group">
+                            {{ form2.setsStart }}
+                        </div>
+                        <span class="mt-1"> ➜ </span>
+                        <div class="col form-group">
+                            {{ form2.setsEnd }}
+                        </div>
+                    </div>
                     <div class="form-group">
                         {{ form2.order }}
                     </div>
                     {{ form2.workout_id }}
                     <button id="submit2" class="btn btn-primary" type="button">Add Exercise</button>
+                </form>
+                <form id="existing_exer_form" onSubmit="return false;">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ form_ee.exercise }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_ee.order }}
+                    </div>
+                    {{ form_ee.exist_workout_id }}
+                    <button id="submit_ee" class="btn btn-primary" type="button">Add Existing Exercise</button>
                 </form>
             </div>
         </div>
@@ -148,19 +177,56 @@
         }
 
         function deleteExercise(e_id, w_id) {
-            $.ajax({
-                url: '/workouts/exercises/' + e_id + '/',
-                type: 'DELETE',
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token|safe }}')
-                },
-                success: function(result) {
-                    console.log('Deleted exercise ' + e_id + ' from workout ' + w_id);
-                    deleteZombieLogs(e_id);
-                    // Since the exercise list is persistent, we want to
-                    // Update it via the button click for 'Delete'
+
+            $.get("/workouts/exercises/" + e_id + "/").done(function(data) {
+                var workout_ids = data['workout_id'].split(',')
+                console.log(workout_ids.length);
+                if (workout_ids.length == 1) {
+                    $.ajax({
+                        url: '/workouts/exercises/' + e_id + '/',
+                        type: 'DELETE',
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token|safe }}')
+                        },
+                        success: function(result) {
+                            console.log('Deleted exercise ' + e_id + ' from workout ' + w_id);
+                            deleteZombieLogs(e_id);
+                            updateExercises(w_id);
+                            // Since the exercise list is persistent, we want to
+                            // Update it via the button click for 'Delete'
+                        }
+                    });
+                } else {
+                    var index = workout_ids.indexOf(w_id.toString());
+                    console.log(index);
+                    if (index > -1) {
+                        workout_ids.splice(index, 1);
+                        var wids_str = workout_ids.join();
+                        $.ajax({
+                           url: '/workouts/exercises/' + e_id + '/',
+                           type: 'PUT',
+                           beforeSend: function(xhr) {
+                                xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token|safe }}')
+                           },
+                           data: "name=" + data['name'] +
+                                 "&order=" + data['order'] +
+                                 "&workout_id=" + wids_str +
+                                 "&repsStart=" + data['repsStart'] +
+                                 "&repsEnd=" + data['repsEnd'] +
+                                 "&setsStart=" + data['setsStart'] +
+                                 "&setsEnd=" + data['setsEnd'] +
+                                 "&owner=" + data['owner'],
+                           success: function(response) {
+                                console.log("removed " + e_id + " from workout " + w_id);
+                                updateExercises(w_id);
+                           }
+                        });
+                    }
                 }
-            });
+            })
+
+
+
         }
 
         function deleteLog(l_id, e_id) {
@@ -219,7 +285,32 @@
                         updateLogs(e_id);
                    }
                 });
-            })
+            });
+        }
+
+        function addListOfExistExer(w_id) {
+            var option_str = "<option value='' selected=''>---------</option>";
+            $.get("/workouts/exercises").done(function(data) {
+                for (e in data) {
+                    if (data[e]['workout_id'].split(',').indexOf(w_id.toString()) > -1) {
+                        console.log("got here");
+                        option_str += "<option value=" + data[e]['id'] + " disabled>" +
+                                      data[e]['name'] +
+                                      " ➜ " +
+                                      SEtoString(data[e]['repsStart'], data[e]['repsEnd']) + "x" +
+                                      SEtoString(data[e]['setsStart'], data[e]['setsEnd']) +
+                                      "</option>";
+                    } else {
+                        option_str += "<option value=" + data[e]['id'] + ">" +
+                                      data[e]['name'] +
+                                      " ➜ " +
+                                      SEtoString(data[e]['repsStart'], data[e]['repsEnd']) + "x" +
+                                      SEtoString(data[e]['setsStart'], data[e]['setsEnd']) +
+                                      "</option>";
+                    }
+                }
+                $("#id_exercise").html(option_str);
+            });
         }
     </script>
     <script src="{% static 'index_forms.js' %}"></script>

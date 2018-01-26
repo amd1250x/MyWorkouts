@@ -22,6 +22,7 @@ def index(request):
         form = WorkoutForm()
         form2 = ExerciseForm()
         form3 = LogForm()
+        form_ee = ExistingExerForm()
         today = datetime.datetime.today().strftime('%Y-%m-%d')
     else:
         return render(request, 'index.html')
@@ -31,6 +32,7 @@ def index(request):
                                           'form': form,
                                           'form2': form2,
                                           'form3': form3,
+                                          'form_ee': form_ee,
                                           'today': today})
 
 

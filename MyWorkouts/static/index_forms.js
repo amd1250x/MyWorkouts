@@ -1,3 +1,6 @@
+var curr_workout = [];
+var curr_exercise = [];
+
 // Show Workouts in the div
 function updateWorkouts() {
     var workout_list = "";
@@ -23,21 +26,29 @@ function updateExercises(w_id) {
     var exer_str = "";
     $.when(
         $.get("/workouts/workouts/" + w_id + "/").done(function(data) {
+            curr_workout = data;
             workout_name = data['name'];
         }),
         $.get("/workouts/exercises").done(function(data2) {
             data2.sort(function(a, b) {
                 return parseInt(a.order) - parseInt(b.order);
             });
+            var repsRange = "";
+            var setsRange = "";
             exer_str = "<ul class='list-group'>";
             for (exercise in data2) {
-                if (data2[exercise]['workout_id'] == w_id) {
+                repsRange = SEtoString(data2[exercise]['repsStart'], data2[exercise]['repsEnd']);
+                setsRange = SEtoString(data2[exercise]['setsStart'], data2[exercise]['setsEnd']);
+                if ((data2[exercise]['workout_id'].split(',')).indexOf(w_id.toString()) > -1) {
                     exer_str += "<li class='list-group-item'>" +
                                 "<a href='#logs' class='btn btn-sm btn-light' onclick='updateLogs(" + data2[exercise]["id"] + ")'>" +
-                                data2[exercise]["name"] + "</a>" +
+                                data2[exercise]["name"] +
+                                "  <span class='badge badge-info'>" +
+                                repsRange + "x" + setsRange + "</span>" +
+                                "</a>" +
                                 "<a href='#' class='btn btn-danger btn-sm float-right' onclick='deleteExercise(" +
                                 data2[exercise]['id'] + ", " +
-                                w_id + "); updateExercises(" + w_id + ")'>Delete</a></li>";
+                                w_id + ")'>Delete</a></li>";
                 }
             }
             exer_str += "</ul>";
@@ -53,9 +64,11 @@ function updateExercises(w_id) {
         } else {
             $("#exercises").html(exer_str);
         }
-        $("#workout_name").html("<button href='#' class='btn btn-outline-danger float-right' onclick='deleteWorkout(" +
+        $("#workout_name").html("<button href='#' class='btn btn-outline-danger float-right mt-2' onclick='deleteWorkout(" +
                                 w_id + ")'>Delete " + workout_name + "</button>")
         $("#id_workout_id").val(w_id);
+        $("#id_exist_workout_id").val(w_id);
+        addListOfExistExer(w_id);
     });
 }
 
@@ -114,7 +127,7 @@ function updateLogs(e_id) {
             var log_tbody = "<tbody>";
             for (log in data3) {
                 if (data3[log]['exercise_id'] == e_id) {
-                    console.log("added log to table for exercise " + e_id);
+                    //console.log("added log to table for exercise " + e_id);
                     log_tbody +=
                     "<tr><th>" + data3[log]['date'] + "</th>" +
                     "<td>" + data3[log]['weight'] + "</td>" +
@@ -173,6 +186,44 @@ $("#submit2").click(function() {
     });
 });
 
+$("#submit_ee").click(function() {
+    // Get the form data from the 'Existing Exercise' form.
+    var array_data = $("#existing_exer_form").serializeArray();
+
+    // Get request for the workout selected
+    $.get("/workouts/exercises/" + array_data[1]['value'] + '/').done(function(data) {
+
+        // Operations to add the current workout to the list of workout ids in the exercise
+        var old_workout = data['workout_id'];
+        old_workout = old_workout.split(',');
+        old_workout.push(array_data[3]['value']);
+        var new_workout = old_workout.join();
+
+        // serialized data sent in the PUT ajax request
+        var dataPUT = "name=" + data['name'] +
+                 "&repsStart=" + data['repsStart'] +
+                 "&repsEnd=" + data['repsEnd'] +
+                 "&setsStart=" + data['setsStart'] +
+                 "&setsEnd=" + data['setsEnd'] +
+                 "&order=" + parseInt(array_data[2]['value']) +
+                 "&workout_id=" + new_workout;
+
+        // The Ajax request itself.
+        $.ajax({
+           url: '/workouts/exercises/' + data['id'] + '/',
+           type: 'PUT',
+           beforeSend: function(xhr) {
+                xhr.setRequestHeader('X-CSRFToken', getCookie('csrftoken'))
+           },
+           data: dataPUT,
+           success: function(response) {
+                console.log("added existing exercise to this workout");
+                updateExercises(parseInt(array_data[3]['value']));
+           }
+        });
+    });
+});
+
 $("#submit3").click(function() {
     var form3_data = $("#log_form").serialize();
     $.post("/workouts/logs/", form3_data).done(function() {
@@ -224,7 +275,9 @@ function getCookie(name) {
     return cookieValue;
 }
 
-
+function deleteListOfExistExer(e_id) {
+    $("#id_exercise option[value='" + e_id + "']").remove();
+}
 
 function rmLast(s) {
     s_array = s.split("-");
@@ -250,4 +303,14 @@ function formatRepsHTML(s) {
 
 function insertToday() {
     $("#id_date").val(moment().format('YYYY-MM-DD'));
+}
+
+function SEtoString(rs, re) {
+    var range = "";
+    if (rs == re) {
+        range = rs;
+    } else {
+        range = rs + "-" + re;
+    }
+    return range;
 }

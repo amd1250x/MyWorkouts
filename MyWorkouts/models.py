@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
+from django.core import validators
 import datetime
 
 # Create your models here.
@@ -18,7 +19,11 @@ class Workout(models.Model):
 class Exercise(models.Model):
     name = models.CharField(max_length=200)
     owner = models.ForeignKey(User, editable=False, on_delete=models.CASCADE)
-    workout_id = models.IntegerField()
+    workout_id = models.CharField(validators=[validators.validate_comma_separated_integer_list], max_length=50)
+    repsEnd = models.IntegerField()
+    repsStart = models.IntegerField()
+    setsEnd = models.IntegerField()
+    setsStart = models.IntegerField()
     order = models.IntegerField()
 
     def __str__(self):
