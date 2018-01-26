@@ -53,7 +53,8 @@ class ExerciseForm(forms.Form):
 
 
 class ExistingExerForm(forms.Form):
-    exercise = forms.ModelChoiceField(queryset=Exercise.objects.all())
+    exercise = forms.ModelChoiceField(queryset=Exercise.objects.all(),
+                                      widget=forms.Select(attrs={'class': 'custom-select'}))
 
     order = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control',
                                                                'placeholder': 'Lift number',

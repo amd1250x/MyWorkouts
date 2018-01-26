@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7fc2696f-ee56-4e00-9450-201247f9d17f" name="Default" comment="``">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/MyWorkouts/forms.py" afterPath="$PROJECT_DIR$/MyWorkouts/forms.py" />
+      <change beforePath="$PROJECT_DIR$/MyWorkouts/static/Eclipse.gif" afterPath="$PROJECT_DIR$/MyWorkouts/static/Eclipse.gif" />
       <change beforePath="$PROJECT_DIR$/MyWorkouts/static/index_forms.js" afterPath="$PROJECT_DIR$/MyWorkouts/static/index_forms.js" />
+      <change beforePath="$PROJECT_DIR$/MyWorkouts/static/style.css" afterPath="$PROJECT_DIR$/MyWorkouts/static/style.css" />
+      <change beforePath="$PROJECT_DIR$/MyWorkouts/templates/header.html" afterPath="$PROJECT_DIR$/MyWorkouts/templates/header.html" />
       <change beforePath="$PROJECT_DIR$/MyWorkouts/templates/index.html" afterPath="$PROJECT_DIR$/MyWorkouts/templates/index.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -31,8 +36,18 @@
           <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/MyWorkouts/templates/index.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="143">
-                  <caret line="182" column="16" lean-forward="false" selection-start-line="182" selection-start-column="16" selection-end-line="182" selection-end-column="16" />
+                <state relative-caret-position="85">
+                  <caret line="5" column="7" lean-forward="true" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="7" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/MyWorkouts/static/style.css">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="51">
+                  <caret line="3" column="27" lean-forward="false" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
                   <folding />
                 </state>
               </provider>
@@ -52,7 +67,7 @@
             <entry file="file://$PROJECT_DIR$/MyFitness2/wsgi.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="221">
-                  <caret line="13" column="1" lean-forward="true" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
+                  <caret line="13" column="1" lean-forward="false" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
                   <folding>
                     <element signature="e#226#240#0" expanded="true" />
                   </folding>
@@ -63,8 +78,8 @@
           <file leaf-file-name="header.html" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/MyWorkouts/templates/header.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="136">
-                  <caret line="8" column="97" lean-forward="false" selection-start-line="8" selection-start-column="97" selection-end-line="8" selection-end-column="97" />
+                <state relative-caret-position="187">
+                  <caret line="11" column="113" lean-forward="false" selection-start-line="11" selection-start-column="113" selection-end-line="11" selection-end-column="113" />
                   <folding />
                 </state>
               </provider>
@@ -119,11 +134,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="forms.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="forms.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/MyWorkouts/forms.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="497">
-                  <caret line="60" column="10" lean-forward="false" selection-start-line="60" selection-start-column="10" selection-end-line="60" selection-end-column="10" />
+                <state relative-caret-position="378">
+                  <caret line="55" column="69" lean-forward="false" selection-start-line="55" selection-start-column="69" selection-end-line="55" selection-end-column="69" />
                   <folding>
                     <element signature="e#0#24#0" expanded="true" />
                   </folding>
@@ -153,11 +168,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="index_forms.js" pinned="false" current-in-tab="true">
+          <file leaf-file-name="index_forms.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/MyWorkouts/static/index_forms.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="646">
-                  <caret line="50" column="41" lean-forward="false" selection-start-line="50" selection-start-column="41" selection-end-line="50" selection-end-column="41" />
+                <state relative-caret-position="187">
+                  <caret line="11" column="47" lean-forward="false" selection-start-line="11" selection-start-column="47" selection-end-line="11" selection-end-column="47" />
                   <folding />
                 </state>
               </provider>
@@ -204,7 +219,6 @@
         <option value="$PROJECT_DIR$/MyWorkouts/templates/add_log.html" />
         <option value="$PROJECT_DIR$/MyWorkouts/templates/add_exercise.html" />
         <option value="$PROJECT_DIR$/MyWorkouts/templates/add_set.html" />
-        <option value="$PROJECT_DIR$/MyWorkouts/static/style.css" />
         <option value="$PROJECT_DIR$/MyWorkouts/urls.py" />
         <option value="$PROJECT_DIR$/webpack-stats.json" />
         <option value="$PROJECT_DIR$/MyFitness2/urls.py" />
@@ -216,7 +230,6 @@
         <option value="$PROJECT_DIR$/Procfile" />
         <option value="$PROJECT_DIR$/MyWorkouts/templates/log_set_form.html" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/MyWorkouts/templates/header.html" />
         <option value="$PROJECT_DIR$/MyWorkouts/templates/registration/login.html" />
         <option value="$PROJECT_DIR$/MyWorkouts/templates/registration/new_user.html" />
         <option value="$PROJECT_DIR$/MyFitness2/settings.py" />
@@ -225,9 +238,11 @@
         <option value="$PROJECT_DIR$/MyWorkouts/models.py" />
         <option value="$PROJECT_DIR$/MyWorkouts/serializers.py" />
         <option value="$PROJECT_DIR$/MyWorkouts/views.py" />
-        <option value="$PROJECT_DIR$/MyWorkouts/forms.py" />
-        <option value="$PROJECT_DIR$/MyWorkouts/static/index_forms.js" />
+        <option value="$PROJECT_DIR$/MyWorkouts/static/style.css" />
+        <option value="$PROJECT_DIR$/MyWorkouts/templates/header.html" />
         <option value="$PROJECT_DIR$/MyWorkouts/templates/index.html" />
+        <option value="$PROJECT_DIR$/MyWorkouts/static/index_forms.js" />
+        <option value="$PROJECT_DIR$/MyWorkouts/forms.py" />
       </list>
     </option>
   </component>
@@ -567,21 +582,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MyWorkouts/static/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MyWorkouts/templates/header.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="97" lean-forward="false" selection-start-line="8" selection-start-column="97" selection-end-line="8" selection-end-column="97" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/MyWorkouts/templates/registration/login.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
@@ -642,7 +642,7 @@
     <entry file="file://$PROJECT_DIR$/MyFitness2/wsgi.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
-          <caret line="13" column="1" lean-forward="true" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
+          <caret line="13" column="1" lean-forward="false" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
           <folding>
             <element signature="e#226#240#0" expanded="true" />
           </folding>
@@ -688,29 +688,45 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MyWorkouts/forms.py">
+    <entry file="file://$PROJECT_DIR$/MyWorkouts/static/style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="497">
-          <caret line="60" column="10" lean-forward="false" selection-start-line="60" selection-start-column="10" selection-end-line="60" selection-end-column="10" />
-          <folding>
-            <element signature="e#0#24#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="51">
+          <caret line="3" column="27" lean-forward="false" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MyWorkouts/templates/header.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="113" lean-forward="false" selection-start-line="11" selection-start-column="113" selection-end-line="11" selection-end-column="113" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/MyWorkouts/static/index_forms.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
-          <caret line="50" column="41" lean-forward="false" selection-start-line="50" selection-start-column="41" selection-end-line="50" selection-end-column="41" />
+        <state relative-caret-position="187">
+          <caret line="11" column="47" lean-forward="false" selection-start-line="11" selection-start-column="47" selection-end-line="11" selection-end-column="47" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/MyWorkouts/templates/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="143">
-          <caret line="182" column="16" lean-forward="false" selection-start-line="182" selection-start-column="16" selection-end-line="182" selection-end-column="16" />
+        <state relative-caret-position="85">
+          <caret line="5" column="7" lean-forward="true" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="7" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MyWorkouts/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="55" column="69" lean-forward="false" selection-start-line="55" selection-start-column="69" selection-end-line="55" selection-end-column="69" />
+          <folding>
+            <element signature="e#0#24#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

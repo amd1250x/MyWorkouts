@@ -4,24 +4,32 @@ var curr_exercise = [];
 // Show Workouts in the div
 function updateWorkouts() {
     var workout_list = "";
-    $.get("/workouts/workouts").done(function(data) {
-        if (data.length != 0) {
-            for (workout in data) {
-                workout_list += "<a href='#exercises' id='workoutbtn" + data[workout]['id'] + "' class='dropdown-item' onclick='updateExercises(" +
-                                data[workout]['id'] + ")'>" + data[workout]['name'];
-                workout_list += "</a>";
-            }
+    $("#loading").attr({'class':'visible'});
+    $.when(
+        $.get("/workouts/workouts").done(function(data) {
+            if (data.length != 0) {
+                for (workout in data) {
+                    workout_list += "<a href='#' id='workoutbtn" + data[workout]['id'] + "'" +
+                    'data-toggle="collapse" data-target=".navbar-collapse"' +
+                    "class='dropdown-item' onclick='updateExercises(" +
+                    data[workout]['id'] + ")'>" + data[workout]['name'];
+                    workout_list += "</a>";
+                }
 
-        } else {
-            workout_list += "<p>No workouts? Add some!</p>";
-        }
-        $("#workouts-menu").html(workout_list);
+            } else {
+                workout_list += "<p>No workouts? Add some!</p>";
+            }
+            $("#workouts-menu").html(workout_list);
+        })
+    ).then(function() {
+        $("#loading").attr({'class':'invisible'});
     });
 }
 
 
 // Show the exercises in the div
 function updateExercises(w_id) {
+    $("#loading").attr({'class':'visible'});
     var workout_name = "";
     var exer_str = "";
     $.when(
@@ -41,7 +49,7 @@ function updateExercises(w_id) {
                 setsRange = SEtoString(data2[exercise]['setsStart'], data2[exercise]['setsEnd']);
                 if ((data2[exercise]['workout_id'].split(',')).indexOf(w_id.toString()) > -1) {
                     exer_str += "<li class='list-group-item'>" +
-                                "<a href='#logs' class='btn btn-sm btn-light' onclick='updateLogs(" + data2[exercise]["id"] + ")'>" +
+                                "<a href='#' class='btn btn-sm btn-light' onclick='updateLogs(" + data2[exercise]["id"] + ")'>" +
                                 data2[exercise]["name"] +
                                 "  <span class='badge badge-info'>" +
                                 repsRange + "x" + setsRange + "</span>" +
@@ -69,11 +77,13 @@ function updateExercises(w_id) {
         $("#id_workout_id").val(w_id);
         $("#id_exist_workout_id").val(w_id);
         addListOfExistExer(w_id);
+        $("#loading").attr({'class':'invisible'});
     });
 }
 
 // Show the logs in the div
 function updateLogs(e_id) {
+    $("#loading").attr({'class':'visible'});
     var log_str = "";
     $.when(
         $.get("/workouts/logs").done(function(data3n) {
@@ -143,6 +153,7 @@ function updateLogs(e_id) {
         $("#log-sec").attr({'class': 'row visible'});
         $("#logs").html(log_str);
         $("#id_exercise_id").val(e_id);
+        $("#loading").attr({'class':'invisible'});
     });
 
 }
@@ -172,6 +183,7 @@ function deleteZombieExercises(w_id) {
 }
 
 $("#submit").click(function() {
+    $("#loading").attr({'class':'visible'});
     var form_data = $("#workout_form").serialize();
     $.post("/workouts/workouts/", form_data).done(function() {
          updateWorkouts();
@@ -180,6 +192,7 @@ $("#submit").click(function() {
 });
 
 $("#submit2").click(function() {
+    $("#loading").attr({'class':'visible'});
     var form2_data = $("#exercise_form").serialize();
     $.post("/workouts/exercises/", form2_data).done(function() {
         updateExercises($("#id_workout_id").val());
@@ -190,6 +203,9 @@ $("#submit2").click(function() {
 });
 
 $("#submit_ee").click(function() {
+    // Show the loading spinner
+    $("#loading").attr({'class':'visible'});
+
     // Get the form data from the 'Existing Exercise' form.
     var array_data = $("#existing_exer_form").serializeArray();
 
@@ -228,6 +244,7 @@ $("#submit_ee").click(function() {
 });
 
 $("#submit3").click(function() {
+    $("#loading").attr({'class':'visible'});
     var form3_data = $("#log_form").serialize();
     $.post("/workouts/logs/", form3_data).done(function() {
         updateLogs($("#id_exercise_id").val());

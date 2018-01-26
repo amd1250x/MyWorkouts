@@ -8,9 +8,10 @@
 
 <body>
 {{ error }}
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
       <a class="navbar-brand" href="#">MyWorkouts</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <a href="#" class="pull-left"><img height="50px" id="loading" class="invisible" src="{% static 'Eclipse.gif' %}" /></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
@@ -154,6 +155,7 @@
         });
 
         function deleteWorkout(w_id) {
+            $("#loading").attr({'class':'visible'});
             $.ajax({
                 url: '/workouts/workouts/' + w_id + '/',
                 type: 'DELETE',
@@ -177,7 +179,7 @@
         }
 
         function deleteExercise(e_id, w_id) {
-
+            $("#loading").attr({'class':'visible'});
             $.get("/workouts/exercises/" + e_id + "/").done(function(data) {
                 var workout_ids = data['workout_id'].split(',')
                 if (workout_ids.length == 1) {
@@ -228,6 +230,7 @@
         }
 
         function deleteLog(l_id, e_id) {
+            $("#loading").attr({'class':'visible'});
             $.ajax({
                 url: '/workouts/logs/' + l_id + '/',
                 type: 'DELETE',
@@ -244,6 +247,7 @@
         }
 
         function addSet(l_id, e_id) {
+            $("#loading").attr({'class':'visible'});
             var x = $("#set_num" + l_id).val();
             if (x == "") {
                 return false;
@@ -265,6 +269,7 @@
         }
 
         function deleteLastSet(l_id, e_id) {
+            $("#loading").attr({'class':'visible'});
             $.get("/workouts/logs/" + l_id + "/").done(function(data){
                 if (data['reps'].split("-") == data['reps']) {
                     console.log("yeah");
