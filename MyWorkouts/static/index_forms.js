@@ -161,8 +161,11 @@ function deleteZombieLogs(e_id) {
 function deleteZombieExercises(w_id) {
     $.get("/workouts/exercises").done(function(data) {
         for (exercise in data) {
-            if (data[exercise]['workout_id'] == w_id) {
+            if (data[exercise]['workout_id'].split(",").indexOf(w_id.toString()) > -1) {
                 deleteExercise(data[exercise]['id'], w_id);
+                console.log('got here');
+            } else {
+                console.log('failed case');
             }
         }
     });
