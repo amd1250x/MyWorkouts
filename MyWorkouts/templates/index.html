@@ -22,7 +22,7 @@
           </li>
 {% if request.user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link" href="logout">Logout</a>
+            <a class="nav-link" href="/workouts/logout">Logout</a>
           </li>
           <li class="nav-item mr-auto">
             <a class="nav-link" href="#">{{ request.user.username }} </a>
@@ -37,10 +37,10 @@
           </li>
 {% else %}
           <li class="nav-item">
-            <a class="nav-link" href="login">Login</a>
+            <a class="nav-link" href="/workouts/login">Login</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="new_user">Create Account</a>
+            <a class="nav-link" href="/workouts/new_user">Create Account</a>
           </li>
 {% endif %}
         </ul>
